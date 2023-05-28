@@ -17,7 +17,8 @@ class NewsTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => nextPage(context, NewsScreen(newsUrl: url)),
-      child: Container(
+      child: Card(
+        elevation: 2,
         margin: const EdgeInsets.only(bottom: 16),
         child: Column(
           children: [
@@ -26,17 +27,27 @@ class NewsTile extends StatelessWidget {
               child: CachedNetworkImage(imageUrl: imageUrl),
             ),
             const SizedBox(height: 5),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                title,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 4,
+                right: 8,
+                left: 8,
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.w600),
+                ),
               ),
             ),
             const SizedBox(height: 5),
-            Text(description,
-                style: const TextStyle(fontSize: 14, color: Colors.black54)),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+              child: Text(description,
+                  style: const TextStyle(fontSize: 14, color: Colors.black54)),
+            ),
           ],
         ),
       ),

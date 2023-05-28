@@ -1,7 +1,6 @@
 import 'package:daily_news_app/models/category_model.dart';
 import 'package:daily_news_app/models/news_model.dart';
 import 'package:daily_news_app/screens/category_screen.dart';
-import 'package:daily_news_app/screens/news_screen.dart';
 import 'package:daily_news_app/utils/news.dart';
 import 'package:daily_news_app/utils/utils.dart';
 import 'package:daily_news_app/widgets/category_tile.dart';
@@ -15,8 +14,9 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+List<NewsModel> news = <NewsModel>[];
+
 class _HomeScreenState extends State<HomeScreen> {
-  List<NewsModel> news = <NewsModel>[];
   bool isLoading = true;
 
   @override
@@ -130,34 +130,35 @@ class MySearchDelegate extends SearchDelegate {
   @override
   Widget? buildLeading(BuildContext context) {
     return IconButton(
-        icon: const Icon(Icons.arrow_back),
-        onPressed: () => close(context, null));
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () => close(context, null),
+    );
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    List<NewsModel> news = [];
-    News newClass = News();
-    newClass.getSearchNews(query);
-    news = newClass.news;
-
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: ListView.builder(
-        itemCount: news.length,
-        shrinkWrap: true,
-        itemBuilder: (_, i) {
-          return NewsTile(
-            description: news[i].description,
-            imageUrl: news[i].urlToImage,
-            title: news[i].title,
-            url: news[i].url,
+    final news = News();
+    return FutureBuilder(
+        future: news.getSearchNews(query),
+        builder: (context, snapshot) {
+          return Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: ListView.builder(
+              itemCount: news.news.length,
+              shrinkWrap: true,
+              itemBuilder: (_, i) {
+                return NewsTile(
+                  description: news.news[i].description,
+                  imageUrl: news.news[i].urlToImage,
+                  title: news.news[i].title,
+                  url: news.news[i].url,
+                );
+              },
+            ),
           );
-        },
-      ),
-    );
+        });
   }
 
   @override
