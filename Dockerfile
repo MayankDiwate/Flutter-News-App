@@ -9,6 +9,7 @@ RUN flutter pub get
 
 # Copy rest of the app
 COPY . .
+RUN sudo chmod 777 pubspec.*
 RUN flutter build web
 
 FROM cgr.dev/chainguard/nginx:latest
